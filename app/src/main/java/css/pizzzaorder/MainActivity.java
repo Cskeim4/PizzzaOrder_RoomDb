@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     Button buttonPlaceOrder;
     Chip chipPepperoni, chipChicken, chipGreenPepper;
     TextView textViewSize;
+    //Create the Recycler view and Order adapter variables
+    RecyclerView recyclerViewOrder;
+    OrderAdapter orderAdapter;
     EditText textOrder;
     Integer pizzaSize = 1;     // Pizza sizes are 0=Small, 1=Medium, 2=Large, 3=X-large
     final String[] PIZZA_SIZES = {"Small","Medium","Large","X-Large"};
@@ -38,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
         // May need to add the following to the Module build.gradle file's dependencies section
         // implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        //Set up recyclerViewer and connect it to the widget in the xml file
+        recyclerViewOrder = findViewById(R.id.recyclerViewOrder);
+        orderAdapter = new OrderAdapter(this.getApplication(), mainViewModel);
+        //Set the recyclerView adapter to the orderAdapter
+        recyclerViewOrder.setAdapter(orderAdapter);
+        //Reset the view layout to the current position it is holding
+        recyclerViewOrder.setLayoutManager(new LinearLayoutManager(this));
+
 
         textViewSize = findViewById(R.id.textViewSize);
         textOrder = findViewById(R.id.textOrder);
@@ -94,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mainViewModel.addToOrder(getToppings(), pizzaSize);
+                //Let recyclerView know that new data has been added or changed
+                orderAdapter.notifyDataSetChanged();
                 //textOrder.setText(mainViewModel.getOrder() );
             }
         });

@@ -54,10 +54,12 @@ public class MainViewModel extends AndroidViewModel {
     */
 
     public String getOrderItem(Integer position) {
+
         return pizzaOrder.getOrderItem(position);
     }
 
     public Integer getOrderSize() {
+
         return pizzaOrder.getOrderSize();
     }
 
